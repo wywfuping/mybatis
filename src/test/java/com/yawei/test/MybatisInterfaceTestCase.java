@@ -24,8 +24,8 @@ public class MybatisInterfaceTestCase {
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
         List<User> userList = Lists.newArrayList();
-        userList.add(new User("雷军","china","77777"));
-        userList.add(new User("刘强东","china","888888"));
+        userList.add(new User("雷军", "china", "77777"));
+        userList.add(new User("刘强东", "china", "888888"));
 
         userMapper.batchSave(userList);
         sqlSession.commit();
@@ -33,14 +33,14 @@ public class MybatisInterfaceTestCase {
     }
 
     @Test
-    public void testFindByPage(){
+    public void testFindByPage() {
         SqlSession sqlSession = MybatisUtil.getSqlSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-        List<User> userList = userMapper.findByPage(0,3);
+        List<User> userList = userMapper.findByPage(0, 3);
 
-        for(User user:userList){
-            logger.debug("{}",user);
+        for (User user : userList) {
+            logger.debug("{}", user);
         }
 
         sqlSession.close();
@@ -56,8 +56,8 @@ public class MybatisInterfaceTestCase {
         map.put("password", "123456");
         map.put("address", "四川");
 
-        List<User> userList=userMapper.findByQueryParam(map);
-        logger.debug("{}",userList);
+        List<User> userList = userMapper.findByQueryParam(map);
+        logger.debug("{}", userList);
         sqlSession.close();
     }
 
@@ -103,23 +103,30 @@ public class MybatisInterfaceTestCase {
         SqlSession sqlSession = MybatisUtil.getSqlSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-        List<Integer>  idList= Lists.newArrayList(19,20,21);
-        List<User> userList =userMapper.findByIds(idList);
+        List<Integer> idList = Lists.newArrayList(19, 20, 21);
+        List<User> userList = userMapper.findByIds(idList);
 
         logger.debug("{}", userList);
         sqlSession.close();
     }
 
+    //一级缓存和二级缓存演示
     @Test
     public void testFindById() {
+        //二级缓存
         SqlSession sqlSession = MybatisUtil.getSqlSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
         User user = userMapper.findById(1);
-
         logger.debug("{}", user);
         sqlSession.close();
-        Assert.assertNotNull(user);
+        //-------------------------------------------------
+        SqlSession sqlSession1 = MybatisUtil.getSqlSession();
+        UserMapper userMapper1 = sqlSession1.getMapper(UserMapper.class);
+
+        User user1 = userMapper1.findById(1);
+        logger.debug("{}", user1);
+        sqlSession1.close();
     }
 
     @Test

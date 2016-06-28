@@ -1,7 +1,10 @@
 package com.yawei.pojo;
 
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
+    private static final long serialVersionUID = -850385146081993243L;
+
     private Integer id;
     private String username;
     private String address;
