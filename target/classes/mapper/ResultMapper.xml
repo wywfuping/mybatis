@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yawei.mapper.ResultMapper">
+
+    <select id="findById" parameterType="int" resultType="Result" resultMap="resultMap">
+        SELECT result.*,t_user.username,t_user.address,t_user.password,subject.name,subject.classhour
+        FROM result
+        INNER JOIN t_user on result.id=t_user.id
+        INNER JOIN subject on result.subjectid=subject.id
+        WHERE result.id=#{id}
+    </select>
+
+    <resultMap id="resultMap" type="Result">
+        <id column="id" property="id"/>
+        <result column="studentno" property="studentno"/>
+        <result column="subjectid" property="subjectid"/>
+        <result column="score" property="score"/>
+        <result column="examdate" property="examdate"/>
+
+        <association property="user" javaType="User" column="id">
+            <id column="id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="address" property="address"/>
+            <result column="password" property="password"/>
+        </association>
+        <association property="subject" javaType="Subject" column="id">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="classhour" property="classhour"/>
+        </association>
+    </resultMap>
+</mapper>
