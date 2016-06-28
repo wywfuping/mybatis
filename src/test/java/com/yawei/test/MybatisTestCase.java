@@ -27,6 +27,7 @@ public class MybatisTestCase {
         }
     }
 
+
     @Test
     public void testFindAll() {
         try {

@@ -7,6 +7,16 @@
       SELECT id,username,address,password FROM t_user WHERE id = #{id}
     </select>
 
+    <select id="findByMap" parameterType="map" resultType="User">
+      SELECT id,username,address,password FROM t_user WHERE
+      username = #{username} AND password = #{password}
+    </select>
+
+    <select id="findByParams" resultType="User">
+      SELECT id,username,address,password FROM t_user WHERE
+      username = #{username} AND password = #{password}
+    </select>
+
     <select id="findAll" resultType="User">
         SELECT id,username,address,password FROM t_user
     </select>
