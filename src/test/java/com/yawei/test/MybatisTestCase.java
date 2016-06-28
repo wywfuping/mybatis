@@ -8,10 +8,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 public class MybatisTestCase {
     private Logger logger = LoggerFactory.getLogger(MybatisTestCase.class);
+
+
 
     @Test
     public void testFindOne() {
@@ -34,7 +37,7 @@ public class MybatisTestCase {
             SqlSession sqlSession = MybatisUtil.getSqlSession();
             List<User> userList = sqlSession.selectList("com.yawei.mapper.UserMapper.findAll");
 
-            for(User user:userList) {
+            for (User user : userList) {
                 logger.debug("{}", user);
             }
             sqlSession.close();

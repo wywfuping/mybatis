@@ -9,7 +9,11 @@ import java.util.Map;
 
 public interface UserMapper {
 
+    void batchSave(List<User> userList);
+    List<User> findByIds(List<Integer> idList);
     List<User> findAll();
+    List<User> findByQueryParam(Map<String,Object> queryParam);
+    List<User> findByPage(@Param("start") Integer start,@Param("pageSize") Integer pageSize);
     void delete(Integer id);
     void update(User user);
     void insert(User user);

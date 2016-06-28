@@ -3,6 +3,40 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yawei.mapper.UserMapper">
+
+    <insert id="batchSave" parameterType="list">
+        INSERT INTO t_user(username,address,password) VALUES 
+        <foreach collection="list" item="user" separator=",">
+            (#{user.username},#{user.address},#{user.password})
+        </foreach>
+    </insert>
+    <select id="findByQueryParam" parameterType="map" resultType="User">
+      SELECT id,username,address,password FROM t_user
+      <where>
+          <if test="username!=null and username!=''">
+              username=#{username}
+          </if>
+          <if test="address!=null and address!=''">
+              and address=#{address}
+          </if>
+          <if test="password!=null and password!=''">
+              and password=#{password}
+          </if>
+
+      </where>
+    </select>
+
+    <select id="findByPage"  resultType="User">
+      SELECT id,username,address,password FROM t_user limit #{start},#{pageSize}
+    </select>
+
+    <select id="findByIds" parameterType="list" resultType="User">
+        SELECT id,username,address,password FROM t_user WHERE id IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
     <select id="findById" parameterType="int" resultType="User">
       SELECT id,username,address,password FROM t_user WHERE id = #{id}
     </select>

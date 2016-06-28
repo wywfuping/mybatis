@@ -1,6 +1,7 @@
 package com.yawei.test;
 
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yawei.mapper.UserMapper;
 import com.yawei.pojo.User;
@@ -18,34 +19,25 @@ public class MybatisInterfaceTestCase {
     private Logger logger = LoggerFactory.getLogger(MybatisInterfaceTestCase.class);
 
     @Test
-    public void testFindByMap(){
-        SqlSession sqlSession= MybatisUtil.getSqlSession();
+    public void testBatchSave() {
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        Map<String,Object> map = Maps.newHashMap();
 
-        map.put("username","马云");
-        map.put("password","123456");
+        List<User> userList = Lists.newArrayList();
+        userList.add(new User("雷军","china","77777"));
+        userList.add(new User("刘强东","china","888888"));
 
-        User user = userMapper.findByMap(map);
-        logger.debug("{}",user);
-        Assert.assertNotNull(user);
+        userMapper.batchSave(userList);
+        sqlSession.commit();
+        sqlSession.close();
     }
 
     @Test
-    public void testFindByParams(){
-        SqlSession sqlSession= MybatisUtil.getSqlSession();
+    public void testFindByPage(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-        User user = userMapper.findByParams("马云","123456");
-        logger.debug("{}",user);
-        Assert.assertNotNull(user);
-    }
-
-    @Test
-    public void testFindAll(){
-        SqlSession sqlSession= MybatisUtil.getSqlSession();
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        List<User> userList=userMapper.findAll();
+        List<User> userList = userMapper.findByPage(0,3);
 
         for(User user:userList){
             logger.debug("{}",user);
@@ -55,19 +47,83 @@ public class MybatisInterfaceTestCase {
     }
 
     @Test
-    public void testFindById(){
-        SqlSession sqlSession= MybatisUtil.getSqlSession();
+    public void testFindByQueryParam() {
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        Map<String, Object> map = Maps.newHashMap();
+
+        map.put("username", "马云");
+        map.put("password", "123456");
+        map.put("address", "四川");
+
+        List<User> userList=userMapper.findByQueryParam(map);
+        logger.debug("{}",userList);
+        sqlSession.close();
+    }
+
+    @Test
+    public void testFindByMap() {
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        Map<String, Object> map = Maps.newHashMap();
+
+        map.put("username", "马云");
+        map.put("password", "123456");
+
+        User user = userMapper.findByMap(map);
+        logger.debug("{}", user);
+        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void testFindByParams() {
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-        User user= userMapper.findById(1);
+        User user = userMapper.findByParams("马云", "123456");
+        logger.debug("{}", user);
+        Assert.assertNotNull(user);
+    }
 
-        logger.debug("{}",user);
+    @Test
+    public void testFindAll() {
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        List<User> userList = userMapper.findAll();
+
+        for (User user : userList) {
+            logger.debug("{}", user);
+        }
+
+        sqlSession.close();
+    }
+
+    @Test
+    public void testFindByIds() {
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+        List<Integer>  idList= Lists.newArrayList(19,20,21);
+        List<User> userList =userMapper.findByIds(idList);
+
+        logger.debug("{}", userList);
+        sqlSession.close();
+    }
+
+    @Test
+    public void testFindById() {
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+        User user = userMapper.findById(1);
+
+        logger.debug("{}", user);
         sqlSession.close();
         Assert.assertNotNull(user);
     }
 
     @Test
-    public void testDelete(){
+    public void testDelete() {
         SqlSession sqlSession = MybatisUtil.getSqlSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
@@ -76,8 +132,9 @@ public class MybatisInterfaceTestCase {
         sqlSession.commit();
         sqlSession.close();
     }
+
     @Test
-    public void testUpdate(){
+    public void testUpdate() {
         SqlSession sqlSession = MybatisUtil.getSqlSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
