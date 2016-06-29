@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yawei.mapper.TopicMapper">
+    <select id="findById" parameterType="int" resultType="Topic" resultMap="topicMap">
+        SELECT t_topic.title,t_topic.text,t_topic.viewnum,t_topic.likenum,t_user.username,t_user.email,t_user.avatar,t_node.nodename
+        FROM t_topic
+        INNER JOIN t_user ON t_topic.userid=t_user.id
+        INNER JOIN t_node ON t_topic.nodeid=t_node.id
+        WHERE t_topic.id=#{id}
+    </select>
+    <resultMap id="topicMap" type="Topic">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="text" property="text"/>
+        <result column="viewnum" property="viewnum"/>
+        <result column="likenum" property="likenum"/>
+
+        <association property="forumUser" javaType="ForumUser" column="id">
+            <id column="id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="email" property="email"/>
+            <result column="avatar" property="avatar"/>
+        </association>
+
+        <association property="node" javaType="Node" column="id">
+            <id column="id" property="id"/>
+            <result column="nodename" property="nodename"/>
+        </association>
+    </resultMap>
+
+</mapper>

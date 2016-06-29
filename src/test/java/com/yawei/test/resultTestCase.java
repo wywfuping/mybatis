@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class resultTestCase {
-    private Logger logger = LoggerFactory.getLogger(resultTestCase.class);
+public class ResultTestCase {
+    private Logger logger = LoggerFactory.getLogger(ResultTestCase.class);
 
     @Test
     public void testFindById(){

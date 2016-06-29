@@ -29,6 +29,7 @@ public class MybatisInterfaceTestCase {
 
         userMapper.batchSave(userList);
         sqlSession.commit();
+
         sqlSession.close();
     }
 
